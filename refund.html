@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Refund Chat</title>
+
+<style>
+body{
+    background:#171a21;
+    color:white;
+    font-family:Arial;
+    margin:0;
+}
+
+.chat{
+    width:420px;
+    margin:30px auto;
+    background:#1b2838;
+    border-radius:10px;
+    overflow:hidden;
+}
+
+.header{
+    background:#66c0f4;
+    padding:15px;
+    text-align:center;
+    font-size:22px;
+    font-weight:bold;
+}
+
+.messages{
+    height:350px;
+    overflow:auto;
+    padding:15px;
+}
+
+.bot,.user{
+    padding:10px;
+    border-radius:8px;
+    margin:8px 0;
+    width:fit-content;
+    max-width:80%;
+}
+
+.bot{
+    background:#2a475e;
+}
+
+.user{
+    background:#66c0f4;
+    margin-left:auto;
+}
+
+.controls{
+    padding:10px;
+    background:#22384b;
+}
+
+input,button,textarea{
+    width:100%;
+    margin-top:10px;
+    padding:10px;
+    border:none;
+    border-radius:5px;
+}
+
+button{
+    background:#66c0f4;
+    color:white;
+    cursor:pointer;
+}
+
+#proof{
+    background:white;
+}
+
+.admin{
+    width:700px;
+    margin:40px auto;
+    background:#222;
+    padding:20px;
+    border-radius:10px;
+}
+
+.report{
+    background:#333;
+    padding:10px;
+    margin-top:15px;
+    border-radius:5px;
+}
+</style>
+</head>
+<body>
+
+<div class="chat">
+
+<div class="header">
+Refund Support
+</div>
+
+<div class="messages" id="messages">
+
+<div class="bot">
+Hello 👋<br><br>
+Please fill in the form below to submit a refund request.
+</div>
+
+</div>
+
+<div class="controls">
+
+<input id="order" placeholder="Order Number">
+
+<input id="email" placeholder="Email">
+
+<textarea id="reason" placeholder="Reason for refund"></textarea>
+
+<input type="file" id="proof">
+
+<button onclick="submitReport()">
+Submit Report
+</button>
+
+</div>
+
+</div>
+
+<div class="admin">
+
+<h2>Submitted Reports</h2>
+
+<div id="reports"></div>
+
+</div>
+
+<script>
+
+function addMessage(text,type){
+
+let div=document.createElement("div");
+div.className=type;
+div.innerHTML=text;
+
+messages.appendChild(div);
+
+messages.scrollTop=messages.scrollHeight;
+
+}
+
+function submitReport(){
+
+let order=document.getElementById("order").value;
+let email=document.getElementById("email").value;
+let reason=document.getElementById("reason").value;
+let proof=document.getElementById("proof").files[0];
+
+if(order==""||email==""||reason==""){
+alert("Fill in all fields.");
+return;
+}
+
+addMessage(order,"user");
+
+addMessage("✅ Report Submitted Successfully!","bot");
+
+let report=document.createElement("div");
+
+report.className="report";
+
+report.innerHTML=`
+<b>Order:</b> ${order}<br>
+<b>Email:</b> ${email}<br>
+<b>Reason:</b> ${reason}<br>
+<b>Proof:</b> ${proof ? proof.name : "None"}<br>
+<b>Status:</b> Pending
+`;
+
+document.getElementById("reports").prepend(report);
+
+document.getElementById("order").value="";
+document.getElementById("email").value="";
+document.getElementById("reason").value="";
+document.getElementById("proof").value="";
+
+}
+
+</script>
+
+</body>
+</html>
